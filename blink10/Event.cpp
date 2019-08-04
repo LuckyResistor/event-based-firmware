@@ -17,14 +17,8 @@ bool Event::isValid() const
 
 bool Event::isReady(uint32_t currentTime) const
 {
-  if (_next == currentTime) {
-    return true;
-  }
-  const auto delta = _next - currentTime;
-  if ((delta & static_cast<uint32_t>(0x80000000ul)) != 0) {
-    return true;
-  }
-  return false;
+  const auto delta = static_cast<int32_t>(_next - currentTime);
+  return delta <= 0;  
 }
 
 Event::Function Event::getCall() const

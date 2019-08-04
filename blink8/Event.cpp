@@ -14,14 +14,8 @@ void Event::start(uint32_t delay)
 
 bool Event::isReady(uint32_t currentTime)
 {
-  if (_next == currentTime) {
-    return true;
-  }
-  const auto delta = _next - currentTime;
-  if ((delta & static_cast<uint32_t>(0x80000000ul)) != 0) {
-    return true;
-  }
-  return false;
+  const auto delta = static_cast<int32_t>(_next - currentTime);
+  return delta <= 0;  
 }
 
 void Event::scheduleNext(uint32_t delay)
